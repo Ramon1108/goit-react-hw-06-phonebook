@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { addContact } from '../redux/contactsSlice';
 import css from './ContactForm.module.css';
+import PropTypes from 'prop-types';
 
-function ContactForm({ onSubmit }) {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.currentTarget;
@@ -23,7 +26,7 @@ function ContactForm({ onSubmit }) {
     } else if (!/\d{3}[-]\d{2}[-]\d{2}/g.test(number)) {
       alert('Enter the correct phone number!');
     } else {
-      onSubmit({ name, number });
+      dispatch(addContact({ name, number }));
       setName('');
       setNumber('');
     }
@@ -59,7 +62,6 @@ function ContactForm({ onSubmit }) {
     </form>
   );
 }
-
 ContactForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
