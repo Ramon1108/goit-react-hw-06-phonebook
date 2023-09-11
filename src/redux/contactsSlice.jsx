@@ -14,18 +14,7 @@ const contactsSlice = createSlice({
   },
   reducers: {
     addContact: (state, action) => {
-      const { name, number } = action.payload;
-
-      if (state.contacts.some(contact => contact.name === name)) {
-        alert('This name is already in contacts!');
-        return;
-      }
-
-      if (state.contacts.some(contact => contact.number === number)) {
-        alert('This number is already in contacts!');
-        return;
-      }
-      const newContact = { ...action.payload, id: shortid.generate() };
+      const newContact = action.payload;
       state.contacts.push(newContact);
     },
     deleteContact: (state, action) => {

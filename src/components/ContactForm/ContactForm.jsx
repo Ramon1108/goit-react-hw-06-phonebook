@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
 import css from './ContactForm.module.css';
 import PropTypes from 'prop-types';
+import shortid from 'shortid';
 
 function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const contacts = useSelector(state => state.contacts);
   const dispatch = useDispatch();
 
   const handleChange = e => {
@@ -25,8 +27,17 @@ function ContactForm() {
       alert("Enter the contact's name and number phone!");
     } else if (!/\d{3}[-]\d{2}[-]\d{2}/g.test(number)) {
       alert('Enter the correct phone number!');
+    }
+    if (contacts.some(contact => contact.name === name)) {
+      alert(`The name "${name}" is already in contacts!`);
+      return;
+    }
+
+    if (contacts.some(contact => contact.number === number)) {
+      alert(`Thе number "${number}" is already in contacts!`);
+      return;
     } else {
-      dispatch(addContact({ name, number }));
+      dispatch(addContact({ name, number, id: shortid.generate() }));
       setName('');
       setNumber('');
     }
